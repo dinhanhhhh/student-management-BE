@@ -1,0 +1,120 @@
+{
+  "info": {
+    "name": "Student Management System - Full API",
+    "_postman_id": "sm_full_api_001",
+    "description": "Postman collection cho toàn bộ API Students, Classes, Subjects, Scores",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Students",
+      "item": [
+        {
+          "name": "Get all students",
+          "request": { "method": "GET", "url": "{{base_url}}/api/students" }
+        },
+        {
+          "name": "Get student by ID",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/students/student_id_here"
+          }
+        },
+        {
+          "name": "Create student",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Nguyễn Văn Test\",\n  \"studentId\": \"SV999\",\n  \"email\": \"test@example.com\",\n  \"gender\": \"Male\",\n  \"dateOfBirth\": \"2001-01-01\",\n  \"classId\": \"{{class_id}}\"\n}"
+            },
+            "url": "{{base_url}}/api/students"
+          }
+        },
+        {
+          "name": "Update student",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"updated@example.com\"\n}"
+            },
+            "url": "{{base_url}}/api/students/student_id_here"
+          }
+        },
+        {
+          "name": "Delete student",
+          "request": {
+            "method": "DELETE",
+            "url": "{{base_url}}/api/students/student_id_here"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Classes",
+      "item": [
+        {
+          "name": "Get all classes",
+          "request": { "method": "GET", "url": "{{base_url}}/api/classes" }
+        },
+        {
+          "name": "Create class",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"CTK46\",\n  \"year\": 2026,\n  \"department\": \"CNTT\"\n}"
+            },
+            "url": "{{base_url}}/api/classes"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Subjects",
+      "item": [
+        {
+          "name": "Get all subjects",
+          "request": { "method": "GET", "url": "{{base_url}}/api/subjects" }
+        },
+        {
+          "name": "Create subject",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Lập trình Web\",\n  \"code\": \"WEB101\",\n  \"department\": \"CNTT\"\n}"
+            },
+            "url": "{{base_url}}/api/subjects"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Scores",
+      "item": [
+        {
+          "name": "Get all scores",
+          "request": { "method": "GET", "url": "{{base_url}}/api/scores" }
+        },
+        {
+          "name": "Create score",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"studentId\": \"{{student_id}}\",\n  \"subjectId\": \"{{subject_id}}\",\n  \"score\": 8.5\n}"
+            },
+            "url": "{{base_url}}/api/scores"
+          }
+        }
+      ]
+    }
+  ]
+}
