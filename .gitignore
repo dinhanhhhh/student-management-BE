@@ -1,42 +1,81 @@
-# Node
+# ─────────────────────────────
+# Node & package managers
+# ─────────────────────────────
 node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
-package-lock.json
 
-# Build outputs
+# Lockfiles - NÊN commit đúng 1 loại lockfile bạn dùng (đừng ignore)
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
+
+# ─────────────────────────────
+# Build outputs & caches
+# ─────────────────────────────
 dist/
 build/
+out/
 .tmp/
 .temp/
 .cache/
 coverage/
 .nyc_output/
+.parcel-cache/
+.vite/
+.next/
+.svelte-kit/
 
+# TypeScript / Linters caches
+*.tsbuildinfo
+.eslintcache
+.stylelintcache
+
+# ─────────────────────────────
 # Env & secrets
+# ─────────────────────────────
 .env
 .env.*
 !.env.example
 
+# Nếu dùng direnv
+.envrc
+
+# Private keys/certs (phòng ngừa)
+*.pem
+*.key
+
+# ─────────────────────────────
 # Logs
+# ─────────────────────────────
 logs/
 *.log
 *.log.*
 
+# ─────────────────────────────
 # Editor/OS
+# ─────────────────────────────
 .DS_Store
 Thumbs.db
 .vscode/
 .idea/
 
+# ─────────────────────────────
 # Runtime
+# ─────────────────────────────
 pids/
 *.pid
 *.seed
 *.pid.lock
 
+# Husky internal (tự sinh)
+.husky/_/
+
+# ─────────────────────────────
 # Misc
+# ─────────────────────────────
 *.swp
 *.swo
+*.orig
