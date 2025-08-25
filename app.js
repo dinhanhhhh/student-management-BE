@@ -1,4 +1,4 @@
-// app.js (CommonJS) – Express 5 & Render safe
+// app.js (CommonJS) – Final & Secure Version
 const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
@@ -15,16 +15,17 @@ dotenv.config();
 const app = express();
 
 // 2) Proxy (Render/nginx...)
-app.set("trust proxy", 1); // cần cho IP thật & rate-limit khi sau proxy
+// ĐÃ HOẠT ĐỘNG TỐT - Giữ nguyên
+app.set("trust proxy", true);
+console.log("trust proxy =", app.get("trust proxy")); // debug: phải in 'true'
 
 // 3) Security & parsers
 app.use(
   helmet({
-    crossOriginResourcePolicy: false, // tránh chặn Swagger/UI hoặc asset cross-origin
+    crossOriginResourcePolicy: false,
   })
 );
 
-// CORS: 1 origin (ENV) hoặc mở * khi test
 const FE_ORIGIN = process.env.FE_ORIGIN || "*";
 app.use(
   cors({
@@ -33,7 +34,6 @@ app.use(
   })
 );
 
-// KHÔNG cần app.options("*", ...) — cors middleware sẽ tự handle OPTIONS
 app.use(express.json({ limit: "1mb" }));
 app.use(cookieParser());
 
@@ -45,22 +45,26 @@ app.get("/api/health", (req, res) => {
   res.status(200).json({ status: "ok", time: new Date().toISOString() });
 });
 
-// 5) Rate limit riêng cho login
+// 5) Rate limit riêng cho login (PHIÊN BẢN ĐÚNG)
 const loginLimiter = rateLimit({
   windowMs: 10 * 60 * 1000, // 10 phút
   max: 20,
-  standardHeaders: true,
+  standardHeaders: true, // Gửi header RateLimit-*
+  legacyHeaders: false, // Tắt header X-RateLimit-* cũ
+  // KHÔNG CẦN keyGenerator hay validate ở đây nữa
+  // Vì 'trust proxy' đã được bật, thư viện sẽ tự động và an toàn
+  // xác định IP của người dùng (kể cả IPv4 và IPv6).
 });
 app.use("/api/auth/login", loginLimiter);
 
-// 6) Routes (CHỈ base path tĩnh, không dùng *, (.*), (v1)? ...)
+// 6) Routes
 app.use("/api/auth", require("./routes/auth.routes"));
 app.use("/api/students", require("./routes/student.routes"));
 app.use("/api/classes", require("./routes/class.routes"));
 app.use("/api/subjects", require("./routes/subject.routes"));
 app.use("/api/scores", require("./routes/score.routes"));
 
-// (tuỳ chọn) route gốc để khỏi 404 khi vào domain
+// Route gốc
 app.get("/", (req, res) => {
   res.json({
     message: "Student Management API is running",
@@ -69,18 +73,18 @@ app.get("/", (req, res) => {
   });
 });
 
-// 7) Swagger (đảm bảo ./docs/swagger mount vào '/docs' — KHÔNG phải '/')
+// 7) Swagger
 require("./docs/swagger")(app);
 
-// 8) 404 (không truyền path — tránh wildcard '*')
+// 8) 404
 app.use((req, res) => {
   res.status(404).json({ message: "Not Found" });
 });
 
-// 9) Error handler cuối
+// 9) Error handler
 app.use(errorHandler);
 
-// 10) Start: chỉ listen khi DB đã sẵn sàng
+// 10) Start server
 const PORT = process.env.PORT || 5000;
 
 (async () => {
