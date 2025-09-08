@@ -16,7 +16,7 @@ const app = express();
 
 // 2) Proxy (Render/nginx...)
 // ĐÃ HOẠT ĐỘNG TỐT - Giữ nguyên
-app.set("trust proxy", true);
+app.set("trust proxy", 1);
 console.log("trust proxy =", app.get("trust proxy")); // debug: phải in 'true'
 
 // 3) Security & parsers
